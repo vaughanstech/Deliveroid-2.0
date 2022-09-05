@@ -4,6 +4,8 @@
 // ce, csn pins
 RF24 radio(9, 10);
 
+#define LED 8
+
 // motor control for left side of robot
 const int ENA = 5;
 const int IN1 = 1;
@@ -15,6 +17,7 @@ const int IN3 = 3;
 const int IN4 = 4;
 
 void setup() {
+  pinMode(LED, OUTPUT);
   // setting all motor driver pins
   pinMode(ENA, OUTPUT);
   pinMode(ENB, OUTPUT);
@@ -40,11 +43,12 @@ void loop() {
   Serial.println("Starting loop. Radio on.");
   char receivedMessage[32] = {0};
   if (radio.available()) {
+    digitalWrite(LED, HIGH);
     radio.read(receivedMessage, sizeof(receivedMessage));
     Serial.println(receivedMessage);
     Serial.println("Turning off the radio.");
     radio.stopListening();
-
+    digitalWrite(LED, LOW);
     String stringMessage(receivedMessage);
 
     if (stringMessage == "FORWARD") {
