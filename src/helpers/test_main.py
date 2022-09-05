@@ -29,7 +29,7 @@ def DeliveroidRemoteControl():
 	radio.printDetails()
 	os.system(bashClearCommand)
 
-	print("Welcome to Deliveroid 2.0")
+	print("Deliveroid is in Inside Mode:")
 	print("Controls:\n")
 	print("w = FORWARD")
 	print("a = LEFT")
@@ -93,11 +93,14 @@ def DeliveroidRemoteControl():
 	GPIO.cleanup()
 	DeliveroidRemoteControl()
 
+os.system("clear")
 homeText = """
 -------------------------------------------
-/        Welcome to Deliveroid 2.0        \
-/       Created by: Michael Vaughan       \
+/        Welcome to Deliveroid 2.0        \\
+/       Created by: Michael Vaughan       \\
 -------------------------------------------
 """
 print(homeText)
-DeliveroidRemoteControl()
+location = int(input("How are you controlling the Deliveroid:\n1. Remote Control\n2. Outside"))
+if (location == 1):
+	DeliveroidRemoteControl()
