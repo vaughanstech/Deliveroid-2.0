@@ -3,12 +3,14 @@ import time
 import spidev
 import os
 import sys
+import pygame
+from getkey import getkey, key
 from lib_nrf24 import NRF24
 
-def Deliveroid():
+def DeliveroidRemoteControl():
 	GPIO.setwarnings(False)
 	GPIO.setmode(GPIO.BCM)
-	bashCommand = "clear"
+	bashClearCommand = "clear"
 	pipes = [[0xE8, 0xE8, 0xF0, 0xF0, 0xE1], [0xF0, 0xF0, 0xF0, 0xF0, 0xE1]]
 
 	radio = NRF24(GPIO, spidev.SpiDev())
@@ -26,6 +28,7 @@ def Deliveroid():
 	radio.openWritingPipe(pipes[0])
 	radio.openReadingPipe(1, pipes[1])
 	radio.printDetails()
+	os.system(bashClearCommand)
 
 	print("Welcome to Deliveroid 2.0")
 	option1 = list("FORWARD")
@@ -33,18 +36,23 @@ def Deliveroid():
 	option3 = list("RIGHT")
 	option4 = list("LEFT")
 	option5 = list("STOP")
-	option = int(input("Please choose the mode of operation:\n1. Move motors forward\n2. Move motors reverse\n3. Move motors right\n4. Move motors left\n5. stop\n>> "))
+	# option = int(input("Please choose the mode of operation:\n1. Move motors forward\n2. Move motors reverse\n3. Move motors right\n4. Move motors left\n5. stop\n>> "))
+	print("Choose an option: ")
+	key = getkey()
 
-	if (option == 1):
+	if (key == 'w'):
 		option = option1
-	elif (option == 2):
+	elif (key == 's'):
 		option = option2
-	elif (option == 3):
+	elif (key == 'd'):
 		option = option3
-	elif (option == 4):
+	elif (key == 'a'):
 		option = option4
-	elif (option == 5):
+	elif (key == 'x'):
 		option = option5
+	else:
+		print("This options is not valid. Please retry.")
+		Deliveroid()
 
 	while len(option) < 32:
 		option.append(0)
@@ -78,6 +86,12 @@ def Deliveroid():
 		break
 	print("Cleaning GPIO")
 	GPIO.cleanup()
-	Deliveroid()
+	DeliveroidRemoteControl()
 
-Deliveroid()
+homeText = """
+	-------------------------------------------
+	/        Welcome to Deliveroid 2.0        \
+	/       Created by: Michael Vaughan       \
+	-------------------------------------------
+"""
+DeliveroidRemoteControl()
