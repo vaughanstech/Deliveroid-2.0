@@ -30,33 +30,41 @@ while len(message) < 32:
 	message.append(0)
 
 while True:
-	# creating command to signal the Arduino to do something
-	start = time.time()
-	radio.write(message)
-	print("Sent the message: {}".format(message))
-	radio.startListening()
-	
-	# if the command is not doing anything on the Arduino time out
-	while not radio.available(0):
-		time.sleep(1/100)
-		if time.time() - start > 2:
-			print("Timed out.")
-			break
+	try:
+		# creating command to signal the Arduino to do something
+		start = time.time()
+		radio.write(message)
+		print("Sent the message: {}".format(message))
+		radio.startListening()
+		
+		# if the command is not doing anything on the Arduino time out
+		while not radio.available(0):
+			time.sleep(1/100)
+			if time.time() - start > 2:
+				print("Timed out.")
+				break
 
-	# creating buffer for the returned message from the Arduino
-	receivedMessage = []
-	radio.read(receivedMessage, radio.getDynamicPayloadSize())
-	print("Received: {}".format(receivedMessage))
+		# creating buffer for the returned message from the Arduino
+		receivedMessage = []
+		radio.read(receivedMessage, radio.getDynamicPayloadSize())
+		print("Received: {}".format(receivedMessage))
 
-	print("translating our received Message into unicode characters...")
-	string = ""
+		print("translating our received Message into unicode characters...")
+		string = ""
 
-	# decode the message sent from the Arduino to human readable text
-	for n in receivedMessage:
-		if (n >= 32 and n <= 126):
-			string += chr(n)
-	print("Our received message decodes to: {}".format(string))
-	
-	# once the command has finished executing on the Arduino stop listening so another command may be sent
-	radio.stopListening()
-	time.sleep(1)
+		# decode the message sent from the Arduino to human readable text
+		for n in receivedMessage:
+			if (n >= 32 and n <= 126):
+				string += chr(n)
+		print("Our received message decodes to: {}".format(string))
+		
+		# once the command has finished executing on the Arduino stop listening so another command may be sent
+		radio.stopListening()
+		time.sleep(1)
+	except KeyboardInterrupt:
+		print("Keyboard interrupt")
+	except:
+		print("some error")
+	finally:
+		print("clean up")
+		GPIO.cleanup()
