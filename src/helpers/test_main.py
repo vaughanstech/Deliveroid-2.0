@@ -37,8 +37,8 @@ def DeliveroidRemoteControl():
 	print("s = REVERSE")
 	print("d = RIGHT")
 	print("x = STOP")
-	option1 = list("F")
-	option2 = list("R")
+	option1 = list("FORWARD")
+	option2 = list("REVERSE")
 	option3 = list("RIGHT")
 	option4 = list("LEFT")
 	option5 = list("STOP")
@@ -88,7 +88,6 @@ def DeliveroidRemoteControl():
 				string += chr(n)
 		print("The received message from Deliveroid: {}".format(string))
 		radio.stopListening()
-		time.sleep(1)
 		break
 	print("Cleaning GPIO")
 	GPIO.cleanup()
