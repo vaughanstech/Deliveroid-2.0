@@ -3,6 +3,7 @@ import time
 import spidev
 import os
 import sys
+from pick import pick
 from getkey import getkey, key
 from lib_nrf24 import NRF24
 
@@ -36,8 +37,8 @@ def DeliveroidRemoteControl():
 	print("s = REVERSE")
 	print("d = RIGHT")
 	print("x = STOP")
-	option1 = list("FORWARD")
-	option2 = list("REVERSE")
+	option1 = list("F")
+	option2 = list("R")
 	option3 = list("RIGHT")
 	option4 = list("LEFT")
 	option5 = list("STOP")
@@ -70,7 +71,7 @@ def DeliveroidRemoteControl():
 
 		while not radio.available(0):
 			time.sleep(1/100)
-			if time.time() - start > 2:
+			if time.time() - start > 1:
 				print("Timed out.")
 				break
 
@@ -93,14 +94,14 @@ def DeliveroidRemoteControl():
 	GPIO.cleanup()
 	DeliveroidRemoteControl()
 
-os.system("clear")
-homeText = """
+title ="""
 -------------------------------------------
 /        Welcome to Deliveroid 2.0        \\
 /       Created by: Michael Vaughan       \\
 -------------------------------------------
+         Choose Deliveroid Control
 """
-print(homeText)
-location = int(input("How are you controlling the Deliveroid:\n1. Remote Control\n2. Outside"))
-if (location == 1):
+options = ["Remote Control", "Autonomous"]
+option, index = pick(options, title, indicator="=>")
+if (option == "Remote Control"):
 	DeliveroidRemoteControl()
