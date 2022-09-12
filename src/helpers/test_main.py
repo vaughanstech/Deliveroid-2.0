@@ -17,7 +17,7 @@ def DeliveroidRemoteControl():
 	radio.begin(0, 17, 4000000)
 
 	radio.setPayloadSize(32)
-	radio.setChannel(0x76)
+	radio.setChannel(0x5A)
 	radio.setDataRate(NRF24.BR_1MBPS)
 	radio.setPALevel(NRF24.PA_MAX)
 
