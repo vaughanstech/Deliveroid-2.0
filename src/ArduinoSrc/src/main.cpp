@@ -2,6 +2,9 @@
 #include <SPI.h>
 #include <RF24.h>
 
+#define CommandTrigger 8
+#define ChannelBuffer 7
+
 // ce, csn pins
 RF24 radio(9, 10);
 
@@ -30,6 +33,8 @@ void setup()
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
+  pinMode(CommandTrigger, OUTPUT);
+  pinMode(ChannelBuffer, OUTPUT);
 
   // beginning serial connection to radio signal
   while (!Serial)
@@ -38,22 +43,27 @@ void setup()
 
   radio.begin();
   radio.setPALevel(RF24_PA_MAX);
-  radio.setChannel(0x76);
+  radio.setChannel(0x5A);
+  radio.setDataRate(RF24_1MBPS);
   radio.openWritingPipe(0xF0F0F0F0E1LL);
   const uint64_t pipe = 0xE8E8F0F0E1LL;
   radio.openReadingPipe(1, pipe);
 
   radio.enableDynamicPayloads();
+  radio.setRetries(0, 15);
+  radio.setAutoAck(true);
   radio.powerUp();
 }
 
 void loop()
 {
+  digitalWrite(ChannelBuffer, HIGH);
   radio.startListening();
   Serial.println("Starting loop. Radio on.");
   char receivedMessage[32] = {0};
   if (radio.available())
   {
+    digitalWrite(ChannelBuffer, HIGH);
     radio.read(receivedMessage, sizeof(receivedMessage));
     Serial.println(receivedMessage);
     Serial.println("Turning off the radio.");
@@ -63,43 +73,58 @@ void loop()
 
     if (stringMessage == "FORWARD")
     {
+      digitalWrite(ChannelBuffer, LOW);
+      digitalWrite(CommandTrigger, HIGH);
       Serial.print("Moving Deliveroid FORWARD");
       const char text[] = "MOVING FORWARD";
       radio.write(text, sizeof(text));
       motorForward();
       Serial.println("Command Completed.");
+      digitalWrite(CommandTrigger, LOW);
     }
     else if (stringMessage == "REVERSE")
     {
+      digitalWrite(CommandTrigger, LOW);
+      digitalWrite(CommandTrigger, HIGH);
       Serial.print("Moving Deliveroid REVERSE");
       const char text[] = "MOVING REVERSE";
       radio.write(text, sizeof(text));
       motorReverse();
       Serial.println("Command Completed");
+      digitalWrite(CommandTrigger, LOW);
     }
     else if (stringMessage == "RIGHT")
     {
+      digitalWrite(CommandTrigger, LOW);
+      digitalWrite(CommandTrigger, HIGH);
       Serial.print("Moving Deliveroid RIGHT");
       const char text[] = "MOVING RIGHT";
       radio.write(text, sizeof(text));
       motorRight();
       Serial.println("Command Completed");
+      digitalWrite(CommandTrigger, LOW);
     }
     else if (stringMessage == "LEFT")
     {
+      digitalWrite(CommandTrigger, LOW);
+      digitalWrite(CommandTrigger, HIGH);
       Serial.print("Moving Deliveroid LEFT");
       const char text[] = "MOVING LEFT";
       radio.write(text, sizeof(text));
       motorLeft();
       Serial.println("Command Completed");
+      digitalWrite(CommandTrigger, LOW);
     }
     else if (stringMessage == "STOP")
     {
+      digitalWrite(CommandTrigger, LOW);
+      digitalWrite(CommandTrigger, HIGH);
       Serial.print("Stopping Deliveroid");
       const char text[] = "STOP";
       radio.write(text, sizeof(text));
       motorStop();
       Serial.println("Command Completed");
+      digitalWrite(CommandTrigger, LOW);
     }
   }
 
