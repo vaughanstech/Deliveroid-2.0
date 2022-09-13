@@ -148,7 +148,7 @@ void motorReverse()
   analogWrite(ENB, 200);
 }
 
-void motorRight()
+void motorLeft()
 {
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
@@ -158,7 +158,7 @@ void motorRight()
   analogWrite(ENB, 200);
 }
 
-void motorLeft()
+void motorRight()
 {
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
