@@ -32,11 +32,13 @@ def DeliveroidRemoteControl():
 
 	print("Deliveroid is in Inside Mode:")
 	print("Controls:\n")
-	print("w = FORWARD")
-	print("a = LEFT")
-	print("s = REVERSE")
-	print("d = RIGHT")
-	print("x = STOP")
+	print("_________________")
+	print("w = FORWARD\t|")
+	print("a = LEFT   \t|")
+	print("s = REVERSE\t|")
+	print("d = RIGHT  \t|")
+	print("x = STOP   \t|__________________")
+	print("q = QUIT MODE\t| z = QUIT CONTROL|")
 	option1 = list("FORWARD")
 	option2 = list("REVERSE")
 	option3 = list("RIGHT")
@@ -56,6 +58,16 @@ def DeliveroidRemoteControl():
 		option = option4
 	elif (key == 'x'):
 		option = option5
+	elif (key == 'q'):
+		option = option5
+		print("Stopping Operation...")
+		print("Quitting...")
+		main_menu()
+	elif (key == 'z'):
+		print("Stopping Operation...")
+		option = option5
+		print("Goodbye!")
+		return True
 	else:
 		print("This options is not valid. Please retry.")
 		DeliveroidRemoteControl()
@@ -93,14 +105,17 @@ def DeliveroidRemoteControl():
 	GPIO.cleanup()
 	DeliveroidRemoteControl()
 
-title ="""
+def main_menu():
+	title ="""
 -------------------------------------------
 /        Welcome to Deliveroid 2.0        \\
 /       Created by: Michael Vaughan       \\
 -------------------------------------------
-         Choose Deliveroid Control
+	 Choose Deliveroid Control
 """
-options = ["Remote Control", "Autonomous"]
-option, index = pick(options, title, indicator="=>")
-if (option == "Remote Control"):
-	DeliveroidRemoteControl()
+	options = ["Remote Control", "Autonomous"]
+	option, index = pick(options, title, indicator="=>")
+	if (option == "Remote Control"):
+		DeliveroidRemoteControl()
+
+main_menu()
