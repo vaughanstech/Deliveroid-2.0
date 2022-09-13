@@ -37,9 +37,6 @@ void setup()
   pinMode(ChannelBuffer, OUTPUT);
 
   // beginning serial connection to radio signal
-  while (!Serial)
-    ;
-  Serial.begin(9600);
 
   radio.begin();
   radio.setPALevel(RF24_PA_MAX);
