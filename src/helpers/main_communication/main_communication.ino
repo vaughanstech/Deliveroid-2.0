@@ -41,23 +41,20 @@ void setup() {
 
 void loop() {
   radio.startListening();
-  Serial.println("Starting loop. Radio on.");
   char receivedMessage[32] = {0};
   if (radio.available()) {
     radio.read(receivedMessage, sizeof(receivedMessage));
-    Serial.println(receivedMessage);
-    Serial.println("Turning off the radio.");
     radio.stopListening();
 
     String stringMessage(receivedMessage);
 
-    if (stringMessage == "FORWARD") {
+    if (stringMessage == "F") {
       Serial.print("Moving Deliveroid FORWARD");
       const char text[] = "MOVING FORWARD";
       radio.write(text, sizeof(text));
       motorForward();
       Serial.println("Command Completed.");
-    } else if (stringMessage == "REVERSE") {
+    } else if (stringMessage == "R") {
       Serial.print("Moving Deliveroid REVERSE");
       const char text[] = "MOVING REVERSE";
       radio.write(text, sizeof(text));
