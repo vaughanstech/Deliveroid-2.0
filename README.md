@@ -11,3 +11,11 @@ Second iteration of the Deliveroid delivery robot
 - Enable Pin: 6
 - Back Right Wheel: 3
 - Front Left Wheel: 4
+
+## NRF24L01 Wiring (on board antenna)
+- CE: 9
+- SCK: 13
+- MISO: 12
+- CSN: 10
+- MOSI: 8
+- IRQ: NULL
