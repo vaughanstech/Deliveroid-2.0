@@ -42,7 +42,7 @@ void setup()
   radio.begin();
   radio.setPALevel(RF24_PA_MAX);
   radio.setChannel(0x70);
-  radio.setDataRate(RF24_250KBPS);
+  radio.setDataRate(RF24_2MBPS);
   radio.openWritingPipe(0xF0F0F0F0E1LL);
   const uint64_t pipe = 0xE8E8F0F0E1LL;
   radio.openReadingPipe(1, pipe);
@@ -125,8 +125,6 @@ void loop()
       digitalWrite(CommandTrigger, LOW);
     }
   }
-
-  delay(100);
 }
 
 void motorForward()
